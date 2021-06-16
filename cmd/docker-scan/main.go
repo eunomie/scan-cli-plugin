@@ -100,7 +100,7 @@ func newScanCmd(ctx context.Context, dockerCli command.Cli) *cobra.Command {
 	cmd.Flags().BoolVar(&flags.showVersion, "version", false, "Display version of the scan plugin")
 	cmd.Flags().BoolVar(&flags.forceOptIn, "accept-license", false, "Accept using a third party scanning provider")
 	cmd.Flags().BoolVar(&flags.forceOptOut, "reject-license", false, "Reject using a third party scanning provider")
-	cmd.Flags().StringVar(&flags.severity, "severity", "", "Only report vulnerabilities of provided level or higher (low|medium|high)")
+	cmd.Flags().StringVar(&flags.severity, "severity", "", "Only report vulnerabilities of provided level or higher (low|medium|high|critical)")
 	cmd.Flags().BoolVar(&flags.groupIssues, "group-issues", false, "Aggregate duplicated vulnerabilities and group them to a single one (requires --json)")
 
 	return cmd
@@ -137,7 +137,7 @@ func configureProvider(ctx context.Context, dockerCli command.Cli, flags options
 		opts = append(opts, provider.WithDependencyTree())
 	}
 	if flags.severity != "" {
-		if flags.severity != "low" && flags.severity != "medium" && flags.severity != "high" {
+		if flags.severity != "low" && flags.severity != "medium" && flags.severity != "high" && flags.severity != "critical" {
 			return nil, fmt.Errorf("--severity takes only 'low', 'medium' or 'high' values")
 		}
 		opts = append(opts, provider.WithSeverity(flags.severity))
