@@ -16,3 +16,6 @@ docker-config/
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Dague tool
+tools/dague

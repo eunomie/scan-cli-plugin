@@ -1,0 +1,15 @@
+#!/bin/sh
+
+build () {
+    docker buildx build --output=type=local,dest=tools -f tools/Dockerfile --build-arg OS=`uname | tr '[:upper:]' '[:lower:]'` --build-arg ARCH=`uname -m` tools
+}
+
+if [ ! -f "tools/dague" ]; then
+  build
+elif [ $# -eq 1 ] && [ "$1" = "refresh" ]; then
+  build
+fi
+
+if [ $# -gt 1 ] || [ ! "$1" = "refresh" ]; then
+  ./tools/dague "$@"
+fi
