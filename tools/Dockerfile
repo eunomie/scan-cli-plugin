@@ -1,4 +1,4 @@
-FROM eunomie/dague:0.0.1 as builder
+FROM eunomie/dague:0.0.2 as builder
 ARG OS
 ARG ARCH
 

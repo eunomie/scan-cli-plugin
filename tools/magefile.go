@@ -23,6 +23,7 @@ var (
 	tagName            string
 	envVars            = map[string]string{
 		"CGO_ENABLED": "0",
+		"GO111MODULE": "on",
 	}
 	buildFlags []string
 )
@@ -55,19 +56,25 @@ type Build mg.Namespace
 // Local builds local binary of docker-scan, for the running platform
 func (Build) Local(ctx context.Context) error {
 	return golang.Local(ctx, types.LocalBuildOpts{
-		Dir:        "dist",
-		In:         "./cmd/docker-scan",
-		Out:        "docker-scan",
-		EnvVars:    envVars,
-		BuildFlags: buildFlags,
+		BuildOpts: types.BuildOpts{
+			Dir:        "dist",
+			In:         "./cmd/docker-scan",
+			EnvVars:    envVars,
+			BuildFlags: buildFlags,
+		},
+		Out: "docker-scan",
 	})
 }
 
 // Cross builds docker-scan binaries for all the supported platforms
 func (Build) Cross(ctx context.Context) error {
 	return golang.Cross(ctx, types.CrossBuildOpts{
-		Dir:           "dist",
-		In:            "./cmd/docker-scan",
+		BuildOpts: types.BuildOpts{
+			Dir:        "dist",
+			In:         "./cmd/docker-scan",
+			EnvVars:    envVars,
+			BuildFlags: buildFlags,
+		},
 		OutFileFormat: "docker-scan_%s_%s",
 		Platforms: []types.Platform{
 			{"linux", "amd64"},
@@ -76,7 +83,5 @@ func (Build) Cross(ctx context.Context) error {
 			{"darwin", "arm64"},
 			{"windows", "amd64"},
 		},
-		EnvVars:    envVars,
-		BuildFlags: buildFlags,
 	})
 }

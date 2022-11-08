@@ -7,7 +7,7 @@ replace github.com/docker/docker => github.com/docker/docker v20.10.3-0.20220414
 replace github.com/tonistiigi/fsutil => github.com/tonistiigi/fsutil v0.0.0-20220115021204-b19f7f9cb274
 
 require (
-	github.com/eunomie/dague v0.0.1
+	github.com/eunomie/dague v0.0.2
 	github.com/magefile/mage v1.14.0
 )
 
